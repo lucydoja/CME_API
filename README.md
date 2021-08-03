@@ -24,7 +24,7 @@
 ### End-points / url
 * To get all possible specialties use http://localhost:3000/api/v1/specialties
 * To gel all possible states use http://localhost:3000/api/v1/states
-* To get the requirements use the following format http://localhost:3000/api/v1/<specialty>/<state> 
-  - Replace <specialty> with the desired specialty you want to consult and <state> with the desired state
+* To get the requirements use the following format http://localhost:3000/api/v1/:specialty/:state
+  - Replace :specialty with the desired specialty you want to consult and :state with the desired state
   - For example: http://localhost:3000/api/v1/child-neurology/colorado
 
