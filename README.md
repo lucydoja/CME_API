@@ -1,18 +1,19 @@
 # CME API
 
-###Description
-This is a Continuing Medical Education (CME) requirements API. Here you will be able to get all the requirements needed for every specialty and state on the list. This a fully Ruby on Rails based app. 
-The cointaining API information is property of [Board Vitals](https://www.boardvitals.com/) and it is being web-scraped from the [CME Coach Section](https://www.boardvitals.com/cme-coach).
+### Description
+* This is a Continuing Medical Education (CME) requirements API. 
+* Here you will be able to get all the requirements needed for every specialty and state on the list. This a fully Ruby on Rails based API. 
+* The cointaining API information is property of [Board Vitals](https://www.boardvitals.com/) and it is being web-scraped from the [CME Coach Section](https://www.boardvitals.com/cme-coach).
 
-###Versions
+### Versions
 * Ruby version '2.5.0'
 * Rails version '6.1.3.2'
 
-###Configuration
+### Configuration
 * bundle install
 * rails s
 
-###Use
+### Use
 * Using a browser
   - Open your browser on the desired url
   - You will be able to visualize the results on the browser
@@ -20,7 +21,7 @@ The cointaining API information is property of [Board Vitals](https://www.boardv
   - Make a get request with the desired end-point
   - The results should appear on your screen 
 
-###End-points / url
+### End-points / url
 * To get all possible specialties use http://localhost:3000/api/v1/specialties
 * To gel all possible states use http://localhost:3000/api/v1/states
 * To get the requirements use the following format http://localhost:3000/api/v1/<specialty>/<state> 
