@@ -3,14 +3,22 @@ require 'httparty'
 require 'byebug'
 
 class Scraper
-    def self.variables
-        url= "https://www.boardvitals.com/cme-coach/"
+    attr_accessor :url
+
+    def initialize()
+        @url = "https://www.boardvitals.com/cme-coach/"
+    end
+    
+    def parse(url)
         unparsed_page = HTTParty.get(url)
         parsed_page   = Nokogiri::HTML(unparsed_page)
-        variables     = parsed_page.css('form.requirements-form').css('div')
         
-        specialties = variables[0].css('option')
-        states = variables[1].css('option')
+    end
+
+    def specialties
+        parsed_page = parse(url)
+        variables     = parsed_page.css('form.requirements-form').css('div')
+        specialties   = variables[0].css('option')
         
         specialties_names = []
         specialties.each do  |specialty|
@@ -18,57 +26,55 @@ class Scraper
             specialties_names.append(specialty)
         end
 
+        specialties_names.shift
+        specialties_names
+        
+    end
+
+    def states
+        parsed_page = parse(url)
+        variables     = parsed_page.css('form.requirements-form').css('div')
+        states = variables[1].css('option')
+        
         states_names = []
         states.each do  |state|
             state = state.attributes['value'].value
             states_names.append(state)
         end
-        specialties_names.shift
+        
         states_names.shift
-        variables = {:specialties => specialties_names, 
-                    :states => states_names
-                }
-        byebug
+        states_names
+        
     end 
 
-    def self.funcion(specialty, state)
+    def cme(specialty, state)
         url= "https://www.boardvitals.com/cme-coach/#{specialty}/#{state}"
-        unparsed_page = HTTParty.get(url)
-        parsed_page = Nokogiri::HTML(unparsed_page)
         
-        boards = parsed_page.css('ul.organizations-list')
+        parsed_page = parse(url)
+        boards      = parsed_page.css('ul.organizations-list')
+        information = []
+
         boards.each do |board|
             requirements = board.css('ul.at-a-glance').css('li').text.strip.split("\n")
-            h = []
-            # requirements.each do |requirement|
-            #     val = requirement.text.strip
-            #     h.append(val)
-            # end
-            name = board.css('div.org-header').text,
-            #requirements = h
-            information = {
+            requirement_list = []
+            requirements.each do |requirement|
+                requirement = requirement.strip
+                if requirement != ""
+                    requirement_list.append(requirement)
+                end
+            end
+
+            requirement_list     = requirement_list
+            org_name             = board.css('div.org-header').css('h3').text
+            org_url              = board.css('div.org-header').css('a')[0].attributes['href'].value
             
+            board_info = {
+                :board_name   => org_name,
+                :board_url    => org_url,
+                :requirements => requirement_list,
             }
-            
+            information = information.append(board_info)
         end
-        
-        # name = board.css('h3').text
-        # name = parsed_page.css('h1').text
-        # boards = parsed_page.css('h3').children
-        # a = []
-        # boards.each do |board|
-        #     title = board.text
-        #     a.append(title)
-        # end
-        # a
-        
+        information
     end
-
-    variables()
-    funcion('child-psychiatry', 'alabama')
-    
-    
-
-
-
 end
